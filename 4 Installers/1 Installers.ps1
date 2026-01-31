@@ -138,10 +138,9 @@ Write-Host "Installing: Epic Games . . ."
 Get-FileFromWeb -URL "https://epicgames-download1.akamaized.net/Builds/UnrealEngineLauncher/Installers/Win32/EpicInstaller-15.17.1.msi?launcherfilename=EpicInstaller-15.17.1.msi" -File "$env:TEMP\Epic Games.msi"
 # install epic games
 Start-Process -wait "$env:TEMP\Epic Games.msi" -ArgumentList "/quiet"
-Clear-Host
-Write-Host "Uninstall: Epic Online Services . . ."
-# uninstall epic online services
-cmd /c "msiexec.exe /x {57A956AB-4BCC-45C6-9B40-957E4E125568} /qn >nul 2>&1"
+# disable epic online services
+Stop-Service -Name "EpicOnlineServices" -Force -ErrorAction SilentlyContinue
+Set-Service -Name "EpicOnlineServices" -StartupType Disabled
 show-menu
 
       }
@@ -175,14 +174,18 @@ Write-Host "Installing: Google Chrome . . ."
 Get-FileFromWeb -URL "https://dl.google.com/dl/chrome/install/googlechromestandaloneenterprise64.msi" -File "$env:TEMP\Chrome.msi"
 # install google chrome
 Start-Process -wait "$env:TEMP\Chrome.msi" -ArgumentList "/quiet"
-# chrome tweaks
+# add chrome policies
 Reg.exe add 'HKLM\SOFTWARE\Policies\Google\Chrome' /v 'StartupBoostEnabled' /t REG_DWORD /d '0' /f | Out-Null
 Reg.exe add 'HKLM\SOFTWARE\Policies\Google\Chrome' /v 'HardwareAccelerationModeEnabled' /t REG_DWORD /d '0' /f | Out-Null
 Reg.exe add 'HKLM\SOFTWARE\Policies\Google\Chrome' /v 'BackgroundModeEnabled' /t REG_DWORD /d '0' /f | Out-Null
 Reg.exe add 'HKLM\SOFTWARE\Policies\Google\Chrome' /v 'HighEfficiencyModeEnabled' /t REG_DWORD /d '1' /f | Out-Null
-Reg.exe add "HKLM\SYSTEM\CurrentControlSet\Services\GoogleChromeElevationService" /v Start /t REG_DWORD /d 4 /f | Out-Null
-Reg.exe add "HKLM\SYSTEM\CurrentControlSet\Services\gupdate" /v Start /t REG_DWORD /d 4 /f | Out-Null
-Reg.exe add "HKLM\SYSTEM\CurrentControlSet\Services\gupdatem" /v Start /t REG_DWORD /d 4 /f | Out-Null
+# disable chrome services
+Stop-Service -Name "GoogleChromeElevationService" -Force -ErrorAction SilentlyContinue
+Set-Service -Name "GoogleChromeElevationService" -StartupType Disabled
+Stop-Service -Name "gupdate" -Force -ErrorAction SilentlyContinue
+Set-Service -Name "gupdate" -StartupType Disabled
+Stop-Service -Name "gupdatem" -Force -ErrorAction SilentlyContinue
+Set-Service -Name "gupdatem" -StartupType Disabled
 # open ublock origin in web browser
 Start-Process "C:\Program Files\Google\Chrome\Application\chrome.exe" "https://chromewebstore.google.com/detail/ublock-origin-lite/ddkjiahejlhfcafbddmgiahcphecmpfh?hl=en"
 show-menu
