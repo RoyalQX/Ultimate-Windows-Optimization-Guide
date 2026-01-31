@@ -690,9 +690,6 @@ Windows Registry Editor Version 5.00
 [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Appx]
 "AllowAutomaticAppArchiving"=dword:00000000
 
-[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\InstallService\Stubification\S-1-5-21-160795866-973872169-1902900476-1000]
-"EnableAppOffloading"=dword:00000000
-
 
 
 
@@ -1916,9 +1913,6 @@ Windows Registry Editor Version 5.00
 ; archive apps
 [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Appx]
 "AllowAutomaticAppArchiving"=-
-
-[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\InstallService\Stubification\S-1-5-21-160795866-973872169-1902900476-1000]
-"EnableAppOffloading"=-
 
 
 
